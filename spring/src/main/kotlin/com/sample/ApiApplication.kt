@@ -1,10 +1,12 @@
 package com.sample
 
+import com.sample.config.OpaqueTokenIntrospectionProperties
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan
 import org.springframework.boot.runApplication
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 
 @SpringBootApplication
+@ConfigurationPropertiesScan(basePackageClasses = [OpaqueTokenIntrospectionProperties::class])
 class SpringApplication
 
 fun main(args: Array<String>) {

@@ -3,6 +3,7 @@
 const path = require('path');
 
 const set = require('lodash/set');
+const logger = require('koa-logger')
 const render = require('koa-ejs');
 const helmet = require('koa-helmet');
 
@@ -34,6 +35,7 @@ let server;
     provider.registerGrantType(grantType, passwordGrant.handler, passwordGrant.parameters, allowedDuplicateParameters);
 
     provider.use(helmet());
+    provider.use(logger());
 
     if (process.env.NODE_ENV === 'production') {
         provider.proxy = true;

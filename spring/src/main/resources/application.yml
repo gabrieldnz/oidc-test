@@ -29,8 +29,8 @@ spring:
       indent-output: false
     mapper:
       default-view-inclusion: false
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://localhost:3000
+
+authserver:
+  client-id: client
+  client-secret: secret
+  introspection-uri: http://localhost:3000/token/introspection

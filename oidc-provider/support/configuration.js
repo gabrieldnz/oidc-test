@@ -15,11 +15,11 @@ interactions.add(selectAccount, 0);
 module.exports = {
     clients: [
         {
-            client_id: 'client1',
-            client_secret: 'secreto',
-            grant_types: ['refresh_token', 'password', 'refresh_token'],
-            redirect_uris: [],
-            response_types: []
+            client_id: 'client',
+            client_secret: 'secret',
+            grant_types: ['refresh_token', 'password', 'refresh_token', 'authorization_code'],
+            redirect_uris: ['http://localhost:8080/login-response'],
+            // response_types: []
         }
     ],
     interactions: {
