@@ -6,6 +6,8 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal
 import org.springframework.util.LinkedMultiValueMap
 import org.springframework.util.MultiValueMap
 import org.springframework.web.bind.annotation.GetMapping
@@ -42,16 +44,16 @@ class TestController {
     }
 
     @GetMapping("/teste")
-    fun teste (): HttpEntity<out Any> {
+    fun teste (@AuthenticationPrincipal authenticationPrincipal: OAuth2AuthenticatedPrincipal): HttpEntity<out Any> {
         return ResponseEntity.ok(mapOf(
-                "message" to "cu"
+                "message" to "ok"
         ))
     }
 
     @GetMapping("/login")
     fun consentRedirect(): HttpEntity<out Any> {
         return ResponseEntity.status(HttpStatus.SEE_OTHER)
-                .location(URI("http://localhost:3000/auth?client_id=client&response_type=code&scope=offline_access%20openid%20profile&prompt=consent"))
+                .location(URI("http://localhost:3000/auth?client_id=client&response_type=code&scope=offline_access%20openid%20profile&state=xyz&prompt=consent"))
                 .build()
     }
 
