@@ -11,16 +11,16 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.19.1",
-    "express": "^4.17.1",
-    "koa-body": "^4.1.1",
-    "koa-ejs": "^4.3.0",
-    "koa-helmet": "^5.2.0",
-    "koa-logger": "^3.2.1",
-    "koa-router": "^7.4.0",
-    "oidc-provider": "^6.18.1"
+    "axios": "0.19.2",
+    "express": "4.17.1",
+    "koa-body": "4.1.1",
+    "koa-ejs": "4.3.0",
+    "koa-helmet": "5.2.0",
+    "koa-logger": "3.2.1",
+    "koa-router": "8.0.8",
+    "oidc-provider": "6.23.2"
   },
   "devDependencies": {
-    "nodemon": "^2.0.2"
+    "nodemon": "2.0.2"
   }
 }
