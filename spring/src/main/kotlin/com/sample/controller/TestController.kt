@@ -19,17 +19,22 @@ import org.springframework.web.client.RestTemplate
 import java.net.URI
 import java.util.UUID
 
-
 @RestController
 class TestController {
 
     private val users = mapOf(
-            "user" to User(username = "user", password = "pass"),
-            "name" to User(username = "name", password = "word")
+            "user" to User(username = "user", password = "pass", authorities = listOf(
+                    "superteste",
+                    "campeao"
+            )),
+            "name" to User(username = "name", password = "word", authorities = listOf(
+                    "teste",
+                    "campeao"
+            ))
     )
 
-    @PostMapping("/user")
-    fun getUserByUsernameAndPassword(@RequestBody request: UserRequest): HttpEntity<out Any> {
+    @PostMapping("/login")
+    fun getUserByUsernameAndPassword(@RequestBody request: LoginRequest): HttpEntity<out Any> {
         val user = users[request.username] ?: return ResponseEntity.badRequest().body(mapOf(
                 "message" to "invalid password or username"
         ))
@@ -44,7 +49,7 @@ class TestController {
     }
 
     @GetMapping("/teste")
-    fun teste (@AuthenticationPrincipal authenticationPrincipal: OAuth2AuthenticatedPrincipal): HttpEntity<out Any> {
+    fun teste(@AuthenticationPrincipal authenticationPrincipal: OAuth2AuthenticatedPrincipal): HttpEntity<out Any> {
         return ResponseEntity.ok(mapOf(
                 "message" to "ok"
         ))
@@ -53,7 +58,7 @@ class TestController {
     @GetMapping("/login")
     fun consentRedirect(): HttpEntity<out Any> {
         return ResponseEntity.status(HttpStatus.SEE_OTHER)
-                .location(URI("http://localhost:3000/auth?client_id=client&response_type=code&scope=offline_access%20openid%20profile&state=xyz&prompt=consent"))
+                .location(URI("http://localhost:3000/auth?client_id=api&response_type=code&scope=offline_access%20openid%20profile&state=xyz&prompt=consent"))
                 .build()
     }
 
@@ -98,10 +103,12 @@ data class TokenResponse(
 data class User(
         val id: UUID = UUID.randomUUID(),
         val username: String,
-        val password: String
+        val password: String,
+        val authorities: List<String>
 )
 
-data class UserRequest(
+data class LoginRequest(
+        val clientId: String,
         val username: String,
         val password: String
 )

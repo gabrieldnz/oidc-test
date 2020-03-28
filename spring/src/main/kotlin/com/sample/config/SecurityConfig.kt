@@ -2,12 +2,15 @@ package com.sample.config
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
+import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.core.AuthenticationException
+import org.springframework.security.oauth2.server.resource.introspection.OpaqueTokenIntrospector
 import org.springframework.security.web.AuthenticationEntryPoint
 import java.io.IOException
 import javax.servlet.ServletException
@@ -18,7 +21,19 @@ import javax.servlet.http.HttpServletResponse
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-class SecurityConfig(private val opaqueTokenIntrospectionProperties: OpaqueTokenIntrospectionProperties) : WebSecurityConfigurerAdapter() {
+class SecurityConfig(private val introspectorToken: OpaqueTokenIntrospector) : WebSecurityConfigurerAdapter() {
+
+    private fun ExpressionUrlAuthorizationConfigurer<HttpSecurity>.AuthorizedUrl.hasScope(scope: String): ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry {
+        return this.hasAuthority("SCOPE_$scope")
+    }
+
+    private fun ExpressionUrlAuthorizationConfigurer<HttpSecurity>.AuthorizedUrl.hasAnyScope(vararg scopes: String): ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry {
+        return this.hasAnyAuthority(
+                *scopes.map {
+                    "SCOPE_$it"
+                }.toTypedArray()
+        )
+    }
 
     override fun configure(http: HttpSecurity) {
         http.sessionManagement()
@@ -27,7 +42,7 @@ class SecurityConfig(private val opaqueTokenIntrospectionProperties: OpaqueToken
                 .authorizeRequests()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/login-response").permitAll()
-                .antMatchers("/user").permitAll()
+                .antMatchers(HttpMethod.POST, "/user").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().disable()
@@ -41,8 +56,7 @@ class SecurityConfig(private val opaqueTokenIntrospectionProperties: OpaqueToken
                     oauth2ResourceServer
                             .opaqueToken { opaqueToken ->
                                 opaqueToken
-                                        .introspectionUri(opaqueTokenIntrospectionProperties.introspectionUri)
-                                        .introspectionClientCredentials(opaqueTokenIntrospectionProperties.clientId, opaqueTokenIntrospectionProperties.clientSecret)
+                                        .introspector(introspectorToken)
                             }
                 }
     }

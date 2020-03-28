@@ -1,19 +1,21 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	id("org.springframework.boot") version "2.2.2.RELEASE"
-	id("io.spring.dependency-management") version "1.0.8.RELEASE"
+	id("org.springframework.boot") version "2.3.0.M2"
+	id("io.spring.dependency-management") version "1.0.9.RELEASE"
 	id("org.asciidoctor.convert") version "1.5.8"
-	kotlin("jvm") version "1.3.61"
- 	kotlin("plugin.spring") version "1.3.61"
+	kotlin("jvm") version "1.3.70"
+ 	kotlin("plugin.spring") version "1.3.70"
 }
 
 group = "com.fourtime"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_1_8
+java.targetCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
 	mavenCentral()
+	maven { url = uri("https://repo.spring.io/milestone") }
 }
 
 val developmentOnly by configurations.creating

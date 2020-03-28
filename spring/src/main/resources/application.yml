@@ -31,6 +31,6 @@ spring:
       default-view-inclusion: false
 
 authserver:
-  client-id: client
+  client-id: api
   client-secret: secret
   introspection-uri: http://localhost:3000/token/introspection

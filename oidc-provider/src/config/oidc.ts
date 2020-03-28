@@ -1,39 +1,13 @@
-const {interactionPolicy: {Prompt, base: policy}} = require('oidc-provider');
+// TODO implementar typings
 
-// copies the default policy, already has login and consent prompt policies
-const interactions = policy();
-
-// create a requestable prompt with no implicit checks
-const selectAccount = new Prompt({
-    name: 'select_account',
-    requestable: true,
-});
-
-// add to index 0, order goes select_account > login > consent
-interactions.add(selectAccount, 0);
-
-module.exports = {
-    clients: [
-        {
-            client_id: 'client',
-            client_secret: 'secret',
-            grant_types: ['refresh_token', 'password', 'refresh_token', 'authorization_code'],
-            redirect_uris: ['http://localhost:8080/login-response'],
-            // response_types: []
-        }
-    ],
-    interactions: {
-        policy: interactions,
-        url(ctx, interaction) { // eslint-disable-line no-unused-vars
-            return `/interaction/${ctx.oidc.uid}`;
-        },
-    },
-    cookies: {
+export default {
+    clients: [],
+    cookies: { // TODO verificar
         long: {signed: true, maxAge: (1 * 24 * 60 * 60) * 1000}, // 1 day in ms
         short: {signed: true},
         keys: ['some secret key', 'and also the old rotated away some time ago', 'and one more'],
     },
-    claims: {
+    claims: { // TODO verificar o que fazer
         address: ['address'],
         email: ['email', 'email_verified'],
         phone: ['phone_number', 'phone_number_verified'],
@@ -42,14 +16,12 @@ module.exports = {
     },
     features: {
         devInteractions: {enabled: false}, // defaults to true
-
         userinfo: {enabled: true},
-
         deviceFlow: {enabled: false}, // defaults to false
         introspection: {enabled: true}, // defaults to false
-        revocation: {enabled: true}, // defaults to false
+        revocation: {enabled: true} // defaults to false
     },
-    jwks: {
+    jwks: { // TODO verificar como gerar valor próprio
         keys: [
             {
                 d: 'VEZOsY07JTFzGTqv6cC2Y32vsfChind2I_TTuvV225_-0zrSej3XLRg8iE_u0-3GSgiGi4WImmTwmEgLo4Qp3uEcxCYbt4NMJC7fwT2i3dfRZjtZ4yJwFl0SIj8TgfQ8ptwZbFZUlcHGXZIr4nL8GXyQT0CK8wy4COfmymHrrUoyfZA154ql_OsoiupSUCRcKVvZj2JHL2KILsq_sh_l7g2dqAN8D7jYfJ58MkqlknBMa2-zi5I0-1JUOwztVNml_zGrp27UbEU60RqV3GHjoqwI6m01U7K0a8Q_SQAKYGqgepbAYOA-P4_TLl5KC4-WWBZu_rVfwgSENwWNEhw8oQ',
@@ -77,7 +49,7 @@ module.exports = {
         AuthorizationCode: 10 * 60, // 10 minutes in seconds
         IdToken: 1 * 60 * 60, // 1 hour in seconds
         DeviceCode: 10 * 60, // 10 minutes in seconds
-        RefreshToken: 1 * 24 * 60 * 60, // 1 day in seconds
+        RefreshToken: 1 * 365 * 24 * 60 * 60, // 1 year in seconds
     },
     rotateRefreshToken: true
 };
