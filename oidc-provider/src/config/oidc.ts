@@ -1,5 +1,3 @@
-// TODO implementar typings
-
 export default {
     clients: [],
     cookies: { // TODO verificar

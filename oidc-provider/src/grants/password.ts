@@ -1,11 +1,10 @@
-import Provider from "oidc-provider";
-import {KoaContextWithOIDC} from "oidc-provider";
+import Provider, {KoaContextWithOIDC} from "oidc-provider";
 import axios from 'axios';
 import {v4 as uuidv4} from 'uuid';
 
 import config from '../config';
 
-const { InvalidGrant } = require('oidc-provider/lib/helpers/errors');
+const {InvalidGrant} = require('oidc-provider/lib/helpers/errors');
 const instance = require('oidc-provider/lib/helpers/weak_cache');
 
 const grantType: string = 'password';
@@ -57,7 +56,7 @@ const handler = async (ctx: KoaContextWithOIDC, next: () => Promise<void>): Prom
     ctx.oidc.entity('Account', user);
 
     const {
-        AccessToken, IdToken, RefreshToken
+        AccessToken, RefreshToken
     } = ctx.oidc.provider;
 
     const at = new AccessToken({

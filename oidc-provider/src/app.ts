@@ -1,7 +1,7 @@
 import 'reflect-metadata';
-import Logger from './config/logger';
 import express from 'express';
 
+import Logger from './config/logger';
 import loaders from "./loaders";
 
 const shutdown = (event: string) => () => {
