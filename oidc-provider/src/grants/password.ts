@@ -81,7 +81,7 @@ const handler = async (ctx: KoaContextWithOIDC, next: () => Promise<void>): Prom
         accountId: user.id,
         acr: undefined,
         amr: undefined,
-        authTime: 999999999,
+        authTime: Math.floor(Date.now() / 1000),
         claims: undefined,
         client: client,
         expiresWithSession: false,
