@@ -1,5 +1,7 @@
 import winston from 'winston';
 
+import config from '../config';
+
 const myFormat = winston.format.printf(({level, message, timestamp}) => {
     return `${timestamp} [${level.toUpperCase()}] ${process.pid}: ${message || ''}`;
 });
@@ -15,7 +17,7 @@ transports.push(
 );
 
 const LoggerInstance = winston.createLogger({
-    level: process.env.LOG_LEVEL || 'silly',
+    level: config.log.level,
     levels: winston.config.npm.levels,
     transports
 });

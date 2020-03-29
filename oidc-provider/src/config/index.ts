@@ -13,6 +13,9 @@ export default {
     api: {
         prefix: '/'
     },
+    log: {
+        level: process.env.LOG_LEVEL || 'silly'
+    },
     provider: {
         issuer: process.env.PROVIDER_ISSUER || `http://localhost:${port}`,
         passwordGrantUserValidatorUrl: <string> process.env.PASSWORD_GRANT_USER_VALIDATION_URL
