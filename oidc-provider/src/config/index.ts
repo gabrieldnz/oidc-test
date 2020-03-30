@@ -10,6 +10,7 @@ const port = parseInt(process.env.PORT || '3000', 10);
 
 export default {
     port,
+    production: process.env.NODE_ENV === 'production',
     api: {
         prefix: '/'
     },
@@ -18,7 +19,11 @@ export default {
     },
     provider: {
         issuer: process.env.PROVIDER_ISSUER || `http://localhost:${port}`,
-        passwordGrantUserValidatorUrl: <string>process.env.PASSWORD_GRANT_USER_VALIDATION_URL
+        passwordGrant: {
+            url: <string>process.env.PASSWORD_GRANT_LOGIN_URL,
+            clientId: <string>process.env.PASSWORD_GRANT_LOGIN_CLIENT_ID,
+            clientSecret: <string>process.env.PASSWORD_GRANT_LOGIN_CLIENT_SECRET
+        }
     },
     db: {
         host: <string>process.env.DB_HOST,

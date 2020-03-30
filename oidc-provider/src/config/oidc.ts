@@ -2,7 +2,7 @@ export default {
     features: {
         devInteractions: {enabled: false}, // defaults to true
         userinfo: {enabled: false},
-        jwtUserInfo: {enabled: false},
+        jwtUserinfo: {enabled: false},
         deviceFlow: {enabled: false}, // defaults to false
         introspection: {enabled: true}, // defaults to false
         revocation: {enabled: true} // defaults to false

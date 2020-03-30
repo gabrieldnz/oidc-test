@@ -3,6 +3,7 @@ import axios from 'axios';
 import {v4 as uuidv4} from 'uuid';
 
 import config from '../config';
+import Logger from '../config/logger';
 
 const {InvalidGrant} = require('oidc-provider/lib/helpers/errors');
 const instance = require('oidc-provider/lib/helpers/weak_cache');
@@ -32,21 +33,24 @@ const handler = async (ctx: KoaContextWithOIDC, next: () => Promise<void>): Prom
     let user = undefined;
 
     try {
-        const response = await axios.post(config.provider.passwordGrantUserValidatorUrl, {
+        const response = await axios.post(config.provider.passwordGrant.url, {
             clientId: client.clientId,
             username: params.username,
             password: params.password
+        }, {
+            auth: {
+                username: config.provider.passwordGrant.clientId,
+                password: config.provider.passwordGrant.clientSecret
+            }
         });
 
         user = response.data;
     } catch (e) {
-        if (e.response.statusCode === 400) {
-            e.response.body
-        }
+        Logger.debug(e.toString());
     }
 
     if (!user) {
-        throw new InvalidGrant('Invalid password or username');
+        throw new InvalidGrant('invalid username or password');
     }
 
     const {

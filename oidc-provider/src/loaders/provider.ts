@@ -13,7 +13,7 @@ export default async () => {
 
     await grants(provider);
 
-    if (process.env.NODE_ENV === 'production') {
+    if (config.production) {
         provider.proxy = true;
         set(oidcConfig, 'cookies.short.secure', true);
         set(oidcConfig, 'cookies.long.secure', true);
