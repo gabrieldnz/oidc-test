@@ -23,8 +23,6 @@ export default async (app: express.Application, provider: Provider) => {
     app.use(bodyParser.urlencoded({extended: true}));
     app.use(bodyParser.json());
 
-    app.use(config.api.prefix, routes(provider));
-
     app.use(helmet());
 
     /// error handlers
@@ -37,7 +35,7 @@ export default async (app: express.Application, provider: Provider) => {
         });
     });
 
-    if (process.env.NODE_ENV === 'production') {
+    if (config.production) {
         app.enable('trust proxy');
 
         app.use((req, res, next) => {
@@ -57,6 +55,8 @@ export default async (app: express.Application, provider: Provider) => {
             }
         });
     }
+
+    app.use(config.api.prefix, routes(provider));
 
     app.listen(config.port, err => {
         if (err) {

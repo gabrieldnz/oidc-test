@@ -4,7 +4,7 @@ import set from 'lodash/set';
 import grants from '../grants';
 import config from '../config';
 import oidcConfig from '../config/oidc';
-import adapter from "../adapters/sequelize";
+import adapter from "../adapters/postgres";
 
 
 export default async () => {

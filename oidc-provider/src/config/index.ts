@@ -1,7 +1,5 @@
 import dotenv from 'dotenv';
 
-import {Dialect} from "sequelize";
-
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 dotenv.config();
@@ -27,9 +25,10 @@ export default {
     },
     db: {
         host: <string>process.env.DB_HOST,
+        schema: <string>process.env.DB_SCHEMA || '',
         database: <string>process.env.DB_DATABASE,
         username: <string>process.env.DB_USERNAME,
         password: <string>process.env.DB_PASSWORD,
-        dialect: <Dialect>process.env.SEQUELIZE_DIALECT
+        port: <number> parseInt(process.env.DB_PORT || '5432', 10)
     }
 };

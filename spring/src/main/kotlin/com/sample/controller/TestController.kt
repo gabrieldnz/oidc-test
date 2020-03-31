@@ -23,14 +23,8 @@ import java.util.UUID
 class TestController {
 
     private val users = mapOf(
-            "user" to User(username = "user", password = "pass", authorities = listOf(
-                    "superteste",
-                    "campeao"
-            )),
-            "name" to User(username = "name", password = "word", authorities = listOf(
-                    "teste",
-                    "campeao"
-            ))
+            "user" to User(username = "user", password = "pass"),
+            "name" to User(username = "name", password = "word")
     )
 
     @PostMapping("/login")
@@ -45,7 +39,7 @@ class TestController {
             ))
         }
 
-        return ResponseEntity.ok(user)
+        return ResponseEntity.ok(user.copy(scope = "full"))
     }
 
     @GetMapping("/teste")
@@ -104,7 +98,7 @@ data class User(
         val id: UUID = UUID.randomUUID(),
         val username: String,
         val password: String,
-        val authorities: List<String>
+        val scope: String? = null
 )
 
 data class LoginRequest(
